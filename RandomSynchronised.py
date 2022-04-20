@@ -11,10 +11,11 @@ timedown = 1.5
 timepressed = 5
 timeup = 1.5
 timeafter = 1
-# depth = 0.001
+depthlower = 0.001
+depthupper = 0.003
 dt = 0.05
 
-upperbound = 34.5 * 0.001  # Only probes a square of side length 34.5mm
+upperbound = 35 * 0.001  # Only probes a square of this side length
 
 duration = timebefore + timeafter + timedown + timeup + timepressed
 samplesdown = int(timedown/dt)
@@ -38,7 +39,8 @@ for i in range(5000):  # Record 5000 probes
     # Random xy positions & depth
     x = random.random()*upperbound
     y = random.random()*upperbound
-    depth = random.choice([0.0005, 0.001, 0.0015])
+    #depth = random.choice([0.0005, 0.001, 0.0015])
+    depth = random.random()*(depthupper - depthlower) + depthlower
     xy = [x, y, depth]
 
     # Control press using defined variables
@@ -62,10 +64,10 @@ for i in range(5000):  # Record 5000 probes
 
     # Measure and record sensor data
     with ni.Task() as task:
-        task.ai_channels.add_ai_voltage_chan("Dev1/ai0:7", terminal_config=TerminalConfiguration.RSE)
+        task.ai_channels.add_ai_voltage_chan("Dev1/ai0:15", terminal_config=TerminalConfiguration.RSE)
 
         urnie.movel(poses[0], acc=0.02, vel=0.02)
-        data = np.zeros((int(duration/dt), 1))*[0, 0, 0, 0, 0, 0, 0, 0]
+        data = np.zeros((int(duration/dt), 1))*[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         times = np.zeros((int(duration/dt), 1))
         t0 = time.time()
         for k in range(0, int(duration/dt)):

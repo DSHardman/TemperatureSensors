@@ -13,7 +13,6 @@ timedown = 1.5
 timepressed = 5
 timeup = 1.5
 timeafter = 1
-# depth = 0.001
 dt = 0.05
 
 duration = timebefore + timeafter + timedown + timeup + timepressed
@@ -62,10 +61,10 @@ for i in range(1000):  # Same location probed 1000 times
 
     # Measure and record sensor data
     with ni.Task() as task:
-        task.ai_channels.add_ai_voltage_chan("Dev1/ai0:7", terminal_config=TerminalConfiguration.RSE)
+        task.ai_channels.add_ai_voltage_chan("Dev1/ai0:15", terminal_config=TerminalConfiguration.RSE)
 
         urnie.movel(poses[0], acc=0.02, vel=0.02)
-        data = np.zeros((int(duration/dt), 1))*[0, 0, 0, 0, 0, 0, 0, 0]
+        data = np.zeros((int(duration/dt), 1))*[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         times = np.zeros((int(duration/dt), 1))
         t0 = time.time()
         for k in range(0, int(duration/dt)):
