@@ -8,6 +8,8 @@ double Rknown = 11000;
 double Vin = 3.3;
 double Vmax = 3.3;
 
+// Careful if powering from external PSU and connecting with serial - same voltage rail is shared (held at 3.3V).
+
 int thermValue;
 
 double Tdes = 70, T, Output;
@@ -26,24 +28,12 @@ void setup() {
 }
 
 void loop() {
-//  digitalWrite(led, 1);
-//  digitalWrite(coil, 0);
-//  thermValue = analogRead(thermread);
-//  T = getTemp(thermValue);
-//  Serial.println(int(T));
-//  delay(3000);
-//
-//  digitalWrite(led, 0);
-//  digitalWrite(coil, 1);
-//  thermValue = analogRead(thermread);
-//  T = getTemp(thermValue);
-//  Serial.println(int(T));
-//  delay(3000);
-
   thermValue = analogRead(thermread);
   T = getTemp(thermValue); // in Celsius
   Serial.println(int(T));
-  
+
+  // LED lights up if within -10/+20 degrees of target
+  // Stops script if temperature exceeds this
   if (T > Tdes + 20) {
     digitalWrite(led, 0);
     Serial.println("Too hot - exiting.");
