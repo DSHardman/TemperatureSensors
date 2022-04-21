@@ -7,7 +7,7 @@ import random
 import nidaqmx as ni
 from nidaqmx.constants import TerminalConfiguration
 
-com = "COM4" # Of probe
+com = "COM3"  # Of probe
 
 # LINES 39 & 40 CHANGE WHICH POINT IS BEING PROBED
 
@@ -22,8 +22,8 @@ duration = timebefore + timeafter + timedown + timeup + timepressed
 samplesdown = int(timedown/dt)
 samplesup = int(timeup/dt)
 
-# NEW ZEROPOSE REQUIRED AT BOTTOM LEFT CORNER
-#zeropose = [-0.0718167, -0.443351, 0.0075692, -1.45804, 2.77907, 0.00753163]
+
+zeropose = [0.260928, -0.430281, 0.191411, 3.07823, 0.407264, -0.0335176]
 
 #  Connect to UR5
 urnie = kgr.kg_robot(port=30010, db_host="169.254.150.50")
