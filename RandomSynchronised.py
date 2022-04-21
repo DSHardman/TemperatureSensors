@@ -1,10 +1,13 @@
 import waypoints as wp
 import kg_robot as kgr
 import time
+import serial
 import numpy as np
 import random
 import nidaqmx as ni
 from nidaqmx.constants import TerminalConfiguration
+
+com = "COM4" # Of probe
 
 timebefore = 1
 timedown = 1.5
@@ -27,6 +30,15 @@ samplesup = int(timeup/dt)
 #  Connect to UR5
 urnie = kgr.kg_robot(port=30010, db_host="169.254.150.50")
 urnie.set_tcp(wp.probing_tcp)
+
+# Connect to probe COM port
+if 'ser' in globals() and not ser.isOpen():
+    ser = serial.Serial(port=com, baudrate=9600)
+elif 'ser' in globals() and ser.isOpen():
+    ser.flushInput()
+    ser.flushOutput()
+else:
+    ser = serial.Serial(port=com, baudrate=9600)
 
 
 #  Set positive rail to 5V
@@ -70,6 +82,7 @@ for i in range(5000):  # Record 5000 probes
         data = np.zeros((int(duration/dt), 1))*[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         times = np.zeros((int(duration/dt), 1))
         t0 = time.time()
+        temp = ser.readline()
         for k in range(0, int(duration/dt)):
             urnie.servoj(poses[k], control_time=dt, lookahead_time=0.2)
             data[k] = task.read()
@@ -84,6 +97,7 @@ for i in range(5000):  # Record 5000 probes
     np.save('rand/rawdata/poses'+str(i), poses)
     np.save('rand/rawdata/times'+str(i), times)
     np.save('rand/rawdata/xy'+str(i), xy)
+    np.save('rand/rawdata/temp'+str(i), float(temp))
 
     print(i)
 
