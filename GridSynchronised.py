@@ -92,11 +92,11 @@ for i in range(0, 36, 3):  # Probe each mm of grid
         urnie.movel(startingpose, acc=0.02, vel=0.02)
 
         # Save data
-        np.save('grid/rawdata/responser'+'_'+str(i)+'_'+str(l), data)
-        np.save('grid/rawdata/posesr'+'_'+str(i)+'_'+str(l), poses)
-        np.save('grid/rawdata/timesr'+'_'+str(i)+'_'+str(l), times)
-        np.save('grid/rawdata/xyr'+'_'+str(i)+'_'+str(l), xy)
-        np.save('grid/rawdata/tempr'+'_'+str(i)+'_'+str(l), float(temp))
+        np.save('grid/rawdata/response100'+'_'+str(i)+'_'+str(l), data)
+        np.save('grid/rawdata/poses100'+'_'+str(i)+'_'+str(l), poses)
+        np.save('grid/rawdata/times100'+'_'+str(i)+'_'+str(l), times)
+        np.save('grid/rawdata/xy100'+'_'+str(i)+'_'+str(l), xy)
+        np.save('grid/rawdata/temp100'+'_'+str(i)+'_'+str(l), float(temp))
 
         print(i)
         print(l)
