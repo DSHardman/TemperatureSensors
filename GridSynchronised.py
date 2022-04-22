@@ -11,9 +11,9 @@ com = "COM3"  # Of probe
 
 timebefore = 1
 timedown = 1.5
-timepressed = 5
+timepressed = 10
 timeup = 1.5
-timeafter = 1
+timeafter = 5
 # depthlower = 0.001
 # depthupper = 0.003
 depth = 0
@@ -45,11 +45,11 @@ with ni.Task() as task:
     task.ao_channels.add_ao_voltage_chan("Dev1/ao0")
     task.write(5)
 
-for i in range(0, 3, 36):  # Probe each mm of grid
-    for k in range(0, 3, 36):
+for i in range(0, 36, 3):  # Probe each mm of grid
+    for l in range(0, 36, 3):
 
         x = i * 0.001
-        y = k * 0.001
+        y = l * 0.001
         #depth = random.choice([0.0005, 0.001, 0.0015])
         # depth = random.random()*(depthupper - depthlower) + depthlower
         xy = [x, y, depth]
@@ -92,13 +92,13 @@ for i in range(0, 3, 36):  # Probe each mm of grid
         urnie.movel(startingpose, acc=0.02, vel=0.02)
 
         # Save data
-        np.save('grid/rawdata/responser'+str(i), data)
-        np.save('grid/rawdata/posesr'+str(i), poses)
-        np.save('grid/rawdata/timesr'+str(i), times)
-        np.save('grid/rawdata/xyr'+str(i), xy)
-        np.save('grid/rawdata/tempr'+str(i), float(temp))
+        np.save('grid/rawdata/responser'+'_'+str(i)+'_'+str(l), data)
+        np.save('grid/rawdata/posesr'+'_'+str(i)+'_'+str(l), poses)
+        np.save('grid/rawdata/timesr'+'_'+str(i)+'_'+str(l), times)
+        np.save('grid/rawdata/xyr'+'_'+str(i)+'_'+str(l), xy)
+        np.save('grid/rawdata/tempr'+'_'+str(i)+'_'+str(l), float(temp))
 
         print(i)
-        print(k)
+        print(l)
 
 urnie.close()
