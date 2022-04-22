@@ -23,7 +23,7 @@ samplesdown = int(timedown/dt)
 samplesup = int(timeup/dt)
 
 
-zeropose = [0.260928, -0.430281, 0.191411, 3.07823, 0.407264, -0.0335176]
+zeropose = [0.181232, -0.553783, -0.00687646, 3.0947, 0.420936, -0.0594446]
 
 #  Connect to UR5
 urnie = kgr.kg_robot(port=30010, db_host="169.254.150.50")

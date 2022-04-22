@@ -14,8 +14,9 @@ timedown = 1.5
 timepressed = 5
 timeup = 1.5
 timeafter = 1
-depthlower = 0.001
-depthupper = 0.003
+# depthlower = 0.001
+# depthupper = 0.003
+depth = 0
 dt = 0.05
 
 upperbound = 35 * 0.001  # Only probes a square of this side length
@@ -24,14 +25,14 @@ duration = timebefore + timeafter + timedown + timeup + timepressed
 samplesdown = int(timedown/dt)
 samplesup = int(timeup/dt)
 
-zeropose = [0.260928, -0.430281, 0.191411, 3.07823, 0.407264, -0.0335176]
+zeropose = [0.181232, -0.553783, -0.00687646, 3.0947, 0.420936, -0.0594446]
 
 #  Connect to UR5
 urnie = kgr.kg_robot(port=30010, db_host="169.254.150.50")
 urnie.set_tcp(wp.probing_tcp)
 
 
-# Connect to probe COM port
+# # Connect to probe COM port
 if 'ser' in globals() and not ser.isOpen():
     ser = serial.Serial(port=com, baudrate=9600)
 elif 'ser' in globals() and ser.isOpen():
@@ -52,7 +53,7 @@ for i in range(5000):  # Record 5000 probes
     x = random.random()*upperbound
     y = random.random()*upperbound
     #depth = random.choice([0.0005, 0.001, 0.0015])
-    depth = random.random()*(depthupper - depthlower) + depthlower
+    # depth = random.random()*(depthupper - depthlower) + depthlower
     xy = [x, y, depth]
 
     # Control press using defined variables
