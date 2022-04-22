@@ -12,7 +12,7 @@ double Vmax = 3.3;
 
 int thermValue;
 
-double Tdes = 50, T, Output;
+double Tdes = 15, T, Output;
 double Kp=50, Ki=20, Kd=0;
 PID myPID(&T, &Output, &Tdes, Kp, Ki, Kd, DIRECT);
 

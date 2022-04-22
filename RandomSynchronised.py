@@ -11,12 +11,11 @@ com = "COM3"  # Of probe
 
 timebefore = 1
 timedown = 1.5
-timepressed = 5
+timepressed = 10
 timeup = 1.5
-timeafter = 1
-# depthlower = 0.001
-# depthupper = 0.003
-depth = 0
+timeafter = 5
+depthlower = 0.001
+depthupper = 0.004
 dt = 0.05
 
 upperbound = 35 * 0.001  # Only probes a square of this side length
@@ -25,7 +24,7 @@ duration = timebefore + timeafter + timedown + timeup + timepressed
 samplesdown = int(timedown/dt)
 samplesup = int(timeup/dt)
 
-zeropose = [0.181232, -0.553783, -0.00687646, 3.0947, 0.420936, -0.0594446]
+zeropose = [0.181232, -0.553783, -0.006, 3.0947, 0.420936, -0.0594446]
 
 #  Connect to UR5
 urnie = kgr.kg_robot(port=30010, db_host="169.254.150.50")
@@ -47,13 +46,13 @@ with ni.Task() as task:
     task.ao_channels.add_ao_voltage_chan("Dev1/ao0")
     task.write(5)
 
-for i in range(5000):  # Record 5000 probes
+for i in range(1000):  # Record 1000 probes at each temperature
 
     # Random xy positions & depth
     x = random.random()*upperbound
     y = random.random()*upperbound
     #depth = random.choice([0.0005, 0.001, 0.0015])
-    # depth = random.random()*(depthupper - depthlower) + depthlower
+    depth = random.random()*(depthupper - depthlower) + depthlower
     xy = [x, y, depth]
 
     # Control press using defined variables
@@ -94,11 +93,11 @@ for i in range(5000):  # Record 5000 probes
     urnie.movel(startingpose, acc=0.02, vel=0.02)
 
     # Save data
-    np.save('rand/rawdata/response'+str(i), data)
-    np.save('rand/rawdata/poses'+str(i), poses)
-    np.save('rand/rawdata/times'+str(i), times)
-    np.save('rand/rawdata/xy'+str(i), xy)
-    np.save('rand/rawdata/temp'+str(i), float(temp))
+    np.save('rand/rawdata/responseroom'+str(i), data)
+    np.save('rand/rawdata/posesroom'+str(i), poses)
+    np.save('rand/rawdata/timesroom'+str(i), times)
+    np.save('rand/rawdata/xyroom'+str(i), xy)
+    np.save('rand/rawdata/temproom'+str(i), float(temp))
 
     print(i)
 
