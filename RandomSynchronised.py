@@ -18,7 +18,7 @@ depthlower = 0.001
 depthupper = 0.004
 dt = 0.05
 
-upperbound = 35 * 0.001  # Only probes a square of this side length
+upperbound = 30 * 0.001  # Only probes a square of this side length
 
 duration = timebefore + timeafter + timedown + timeup + timepressed
 samplesdown = int(timedown/dt)
@@ -46,7 +46,7 @@ with ni.Task() as task:
     task.ao_channels.add_ao_voltage_chan("Dev1/ao0")
     task.write(5)
 
-for i in range(1000):  # Record 1000 probes at each temperature
+for i in range(1500):  # Record 500 probes at each temperature
 
     # Random xy positions & depth
     x = random.random()*upperbound
@@ -93,11 +93,11 @@ for i in range(1000):  # Record 1000 probes at each temperature
     urnie.movel(startingpose, acc=0.02, vel=0.02)
 
     # Save data
-    np.save('rand/rawdata/responseroom'+str(i), data)
-    np.save('rand/rawdata/posesroom'+str(i), poses)
-    np.save('rand/rawdata/timesroom'+str(i), times)
-    np.save('rand/rawdata/xyroom'+str(i), xy)
-    np.save('rand/rawdata/temproom'+str(i), float(temp))
+    np.save('rand/rawdata/responseroom_2_'+str(i), data)
+    np.save('rand/rawdata/posesroom_2_'+str(i), poses)
+    np.save('rand/rawdata/timesroom_2_'+str(i), times)
+    np.save('rand/rawdata/xyroom_2_'+str(i), xy)
+    np.save('rand/rawdata/temproom_2_'+str(i), float(temp))
 
     print(i)
 

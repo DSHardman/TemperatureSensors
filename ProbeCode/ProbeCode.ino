@@ -7,12 +7,15 @@ int thermread = A0;
 double Rknown = 11000;
 double Vin = 3.3;
 double Vmax = 3.3;
+bool rising = 1;
+unsigned long t0;
+unsigned long changetime = 30000;
 
 // Careful if powering from external PSU and connecting with serial - same voltage rail is shared (held at 3.3V).
 
 int thermValue;
 
-double Tdes = 15, T, Output;
+double Tdes = 50, T, Output;
 double Kp=50, Ki=20, Kd=0;
 PID myPID(&T, &Output, &Tdes, Kp, Ki, Kd, DIRECT);
 
@@ -25,6 +28,7 @@ void setup() {
   digitalWrite(led, 0);
   Serial.begin(9600);
   myPID.SetMode(AUTOMATIC);
+  t0 = millis();
 }
 
 void loop() {
@@ -44,6 +48,22 @@ void loop() {
   }
   else {
     digitalWrite(led, 0);
+  }
+
+  if (millis() - t0 > changetime) {
+    t0 = millis();
+    if (rising) {
+      Tdes += 5;
+      if (Tdes >= 100) {
+        rising = 0;
+      }
+    }
+    else {
+      Tdes -= 5;
+      if (Tdes <= 15) {
+        rising = 1;
+      }
+    }
   }
   
   myPID.Compute();
