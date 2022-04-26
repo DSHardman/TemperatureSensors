@@ -15,7 +15,7 @@ unsigned long changetime = 30000;
 
 int thermValue;
 
-double Tdes = 50, T, Output;
+double Tdes = 70, T, Output;
 double Kp=50, Ki=20, Kd=0;
 PID myPID(&T, &Output, &Tdes, Kp, Ki, Kd, DIRECT);
 
@@ -38,10 +38,16 @@ void loop() {
 
   // LED lights up if within -10/+20 degrees of target
   // Stops script if temperature exceeds this
-  if (T > Tdes + 25) {
+  if (T > 120) {
     digitalWrite(led, 0);
-    Serial.println("Too hot - exiting.");
-    exit(0);
+    myPID.Compute();
+    analogWrite(coil, 255 - Output);
+    delay(50000);
+    thermValue = analogRead(thermread);
+    T = getTemp(thermValue); // in Celsius
+    if (T > 120) {
+      exit(0);
+    }
   }
   else if (T > Tdes - 10) {
     digitalWrite(led, 1);
