@@ -38,7 +38,7 @@ void loop() {
 
   // LED lights up if within -10/+20 degrees of target
   // Stops script if temperature exceeds this
-  if (T > Tdes + 20) {
+  if (T > Tdes + 25) {
     digitalWrite(led, 0);
     Serial.println("Too hot - exiting.");
     exit(0);

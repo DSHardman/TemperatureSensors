@@ -1,4 +1,4 @@
-classdef SingleTest < handle
+classdef GridTest < handle
     properties
         n
         positions
@@ -11,28 +11,35 @@ classdef SingleTest < handle
     methods
         
         % Constructor
-        function obj = SingleTest(path,path2,n)
+        function obj = GridTest(path,temp,n)
             
             % initialise properties
             obj.n = n;
             obj.responses = zeros(n,380,16);
-            obj.positions = zeros(n,3);
+            obj.positions = zeros(n, 3);
             obj.poses = zeros(n,380,6);
             obj.times = zeros(n,380);
-            obj.temps = zeros(n,1);
+            obj.temps = zeros(n, 1);
             
             
-            for i = 1:n
-                % set positions
-                obj.positions(i, :) = 1000*readNPY(strcat(path,'xy',path2, string(i-1),'.npy'));
-                % set times
-                obj.times(i,:) = readNPY(strcat(path,'times',path2, string(i-1),'.npy'));
-                % set poses
-                obj.poses(i,:,:) = readNPY(strcat(path,'poses', path2, string(i-1),'.npy'));
-                % set responses
-                obj.responses(i,:,:) = readNPY(strcat(path,'response', path2, string(i-1),'.npy'));
-                % set temperatures
-                obj.temps(i) = readNPY(strcat(path,'temp', path2, string(i-1),'.npy'));
+            for i = 1:sqrt(n)
+                for j = 1:sqrt(n)
+                    % set positions
+                    obj.positions((i-1)*sqrt(n)+j, :) = 1000*readNPY(strcat(path,'xy',string(temp),'_', string((i-1)*3),...
+                        '_', string((j-1)*3),'.npy'));
+                    % set times
+                    obj.times((i-1)*sqrt(n)+j,:) = readNPY(strcat(path,'times',string(temp),'_', string((i-1)*3),...
+                        '_', string((j-1)*3),'.npy')).';
+                    % set poses
+                    obj.poses((i-1)*sqrt(n)+j,:,:) = readNPY(strcat(path,'poses',string(temp),'_', string((i-1)*3),...
+                        '_', string((j-1)*3),'.npy'));
+                    % set responses
+                    obj.responses((i-1)*sqrt(n)+j,:,:) = readNPY(strcat(path,'response',string(temp),'_', string((i-1)*3),...
+                        '_', string((j-1)*3),'.npy'));
+                    % set temperatures
+                    obj.temps((i-1)*sqrt(n)+j) = readNPY(strcat(path,'temp',string(temp),'_', string((i-1)*3),...
+                        '_', string((j-1)*3),'.npy'));
+                end
             end
         end
         
@@ -51,33 +58,25 @@ classdef SingleTest < handle
                             0.635 0.078 0.184;
                             0 0 0];
                 for i = 1:8
-                    subplot(2,1,1);
                     plot(obj.responses(iteration,:,i*2-1), 'LineWidth', 2,...
                         'Color', colors(i,:), 'DisplayName', string(i-1)+"t",...
                         'LineStyle','-');
-                    
                     hold on
-                    subplot(2,1,2);
-                    plot(obj.responses(iteration,:,i*2), 'LineWidth', 2,...
-                        'Color', colors(i,:), 'DisplayName', string(i-1)+"s",...
-                        'LineStyle','-');
-                    title('Strain Sensors');
-                    hold on
+%                     plot(obj.responses(iteration,:,i*2), 'LineWidth', 2,...
+%                         'Color', colors(i,:), 'DisplayName', string(i-1)+"s",...
+%                         'LineStyle','-');
                 end
             end
-            subplot(2,1,1);
             ylim([min(min(min(obj.responses)))-0.5 max(max(max(obj.responses)))]);
             xlim([0 380])
             set(gca, 'LineWidth', 2, 'FontSize', 15, 'XTickLabel', []);
             box off
             ylabel('Sensor Response (V)');
-            legend('location','south', 'orientation', 'horizontal');
-
-
             titlestring = sprintf('x = %.3fmm, y = %.3fmm, Press %d',...
                 obj.positions(iteration,1), obj.positions(iteration,2),...
                 iteration);
-            sgtitle(titlestring);
+            title(titlestring);
+            legend('location','south', 'orientation', 'horizontal');
             %set(gcf, 'Position', [276         307        1545         671]);
         end
         

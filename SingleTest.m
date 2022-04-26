@@ -11,36 +11,38 @@ classdef SingleTest < handle
     methods
         
         % Constructor
-        function obj = SingleTest(path,temp,n)
+        function obj = SingleTest(path,path2,n)
             
             % initialise properties
             obj.n = n;
             obj.responses = zeros(n,380,16);
-            obj.positions = zeros(n, 3);
+            obj.positions = zeros(n,3);
             obj.poses = zeros(n,380,6);
             obj.times = zeros(n,380);
-            obj.temps = zeros(n, 1);
+            obj.temps = zeros(n,1);
             
             
-            for i = 1:sqrt(n)
-                for j = 1:sqrt(n)
-                    % set positions
-                    obj.positions((i-1)*sqrt(n)+j, :) = 1000*readNPY(strcat(path,'xy',string(temp),'_', string((i-1)*3),...
-                        '_', string((j-1)*3),'.npy'));
-                    % set times
-                    obj.times((i-1)*sqrt(n)+j,:) = readNPY(strcat(path,'times',string(temp),'_', string((i-1)*3),...
-                        '_', string((j-1)*3),'.npy')).';
-                    % set poses
-                    obj.poses((i-1)*sqrt(n)+j,:,:) = readNPY(strcat(path,'poses',string(temp),'_', string((i-1)*3),...
-                        '_', string((j-1)*3),'.npy'));
-                    % set responses
-                    obj.responses((i-1)*sqrt(n)+j,:,:) = readNPY(strcat(path,'response',string(temp),'_', string((i-1)*3),...
-                        '_', string((j-1)*3),'.npy'));
-                    % set temperatures
-                    obj.temps((i-1)*sqrt(n)+j) = readNPY(strcat(path,'temp',string(temp),'_', string((i-1)*3),...
-                        '_', string((j-1)*3),'.npy'));
-                end
+            for i = 1:n
+                % set positions
+                obj.positions(i, :) = 1000*readNPY(strcat(path,'xy',path2, string(i-1),'.npy'));
+                % set times
+                obj.times(i,:) = readNPY(strcat(path,'times',path2, string(i-1),'.npy'));
+                % set poses
+                obj.poses(i,:,:) = readNPY(strcat(path,'poses', path2, string(i-1),'.npy'));
+                % set responses
+                obj.responses(i,:,:) = readNPY(strcat(path,'response', path2, string(i-1),'.npy'));
+                % set temperatures
+                obj.temps(i) = readNPY(strcat(path,'temp', path2, string(i-1),'.npy'));
             end
+        end
+
+        function combine(obj, secondobj)
+            obj.n = obj.n + secondobj.n;
+            obj.positions = [obj.positions; secondobj.positions];
+            obj.responses = cat(1, obj.responses, secondobj.responses);
+            obj.poses = cat(1, obj.poses, secondobj.poses);
+            obj.times = [obj.times; secondobj.times];
+            obj.temps = [obj.temps; secondobj.temps];
         end
         
         % plot raw sensor responses
@@ -58,26 +60,41 @@ classdef SingleTest < handle
                             0.635 0.078 0.184;
                             0 0 0];
                 for i = 1:8
+                    subplot(2,1,1);
                     plot(obj.responses(iteration,:,i*2-1), 'LineWidth', 2,...
                         'Color', colors(i,:), 'DisplayName', string(i-1)+"t",...
                         'LineStyle','-');
+                    
                     hold on
-%                     plot(obj.responses(iteration,:,i*2), 'LineWidth', 2,...
-%                         'Color', colors(i,:), 'DisplayName', string(i-1)+"s",...
-%                         'LineStyle','-');
+                    subplot(2,1,2);
+                    plot(obj.responses(iteration,:,i*2), 'LineWidth', 2,...
+                        'Color', colors(i,:), 'DisplayName', string(i-1)+"s",...
+                        'LineStyle','-');
+                    hold on
                 end
             end
+            subplot(2,1,1);
             ylim([min(min(min(obj.responses)))-0.5 max(max(max(obj.responses)))]);
             xlim([0 380])
             set(gca, 'LineWidth', 2, 'FontSize', 15, 'XTickLabel', []);
             box off
             ylabel('Sensor Response (V)');
-            titlestring = sprintf('x = %.3fmm, y = %.3fmm, Press %d',...
-                obj.positions(iteration,1), obj.positions(iteration,2),...
-                iteration);
-            title(titlestring);
             legend('location','south', 'orientation', 'horizontal');
-            set(gcf, 'Position', [276         307        1545         671]);
+            title('Temperature Sensors');
+            subplot(2,1,2);
+            ylim([min(min(min(obj.responses)))-0.5 max(max(max(obj.responses)))]);
+            xlim([0 380])
+            set(gca, 'LineWidth', 2, 'FontSize', 15, 'XTickLabel', []);
+            box off
+            ylabel('Sensor Response (V)');
+            legend('location','south', 'orientation', 'horizontal');
+            title('Strain Sensors');
+
+            titlestring = sprintf('x = %.3fmm, y = %.3fmm, Temp=%d^oC',...
+                obj.positions(iteration,1), obj.positions(iteration,2),...
+                obj.temps(iteration));
+            sgtitle(titlestring);
+            set(gcf, 'Position', [571   200   838   778]);
         end
         
     end
