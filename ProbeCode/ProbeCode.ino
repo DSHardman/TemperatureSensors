@@ -58,21 +58,21 @@ void loop() {
     digitalWrite(led, 0);
   }
 
-//  if (millis() - t0 > changetime) {
-//    t0 = millis();
-//    if (rising) {
-//      Tdes += 1;
-//      if (Tdes >= 100) {
-//        rising = 0;
-//      }
-//    }
-//    else {
-//      Tdes -= 1;
-//      if (Tdes <= 15) {
-//        rising = 1;
-//      }
-//    }
-//  }
+  if (millis() - t0 > changetime) {
+    t0 = millis();
+    if (rising) {
+      Tdes += 5;
+      if (Tdes >= 100) {
+        rising = 0;
+      }
+    }
+    else {
+      Tdes -= 1;
+      if (Tdes <= 15) {
+        rising = 5;
+      }
+    }
+  }
   
   myPID.Compute();
   analogWrite(coil, 255 - Output); //PWM: By default, Output is varied between 0 & 255

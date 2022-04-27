@@ -99,7 +99,8 @@ classdef SingleTest < handle
                 obj.positions(iteration,1), obj.positions(iteration,2),...
                 obj.temps(iteration));
             sgtitle(titlestring);
-            set(gcf, 'Position', [571   200   838   778]);
+            %set(gcf, 'Position', [571   200   838   778]); % PC
+            set(gcf, 'Position', [242.6000   74.6000  805.4000  783.4000]); % Laptop
         end
         
     end
