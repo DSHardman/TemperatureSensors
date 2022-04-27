@@ -36,6 +36,7 @@ classdef SingleTest < handle
             end
         end
 
+        % Used to combine datasets when making objects
         function combine(obj, secondobj)
             obj.n = obj.n + secondobj.n;
             obj.positions = [obj.positions; secondobj.positions];
@@ -45,7 +46,7 @@ classdef SingleTest < handle
             obj.temps = [obj.temps; secondobj.temps];
         end
         
-        % plot raw sensor responses
+        % Useful function: plots sensor responses for a given iteration
         function plotresponse(obj, iteration, sensor)
 
             if nargin == 3
@@ -61,13 +62,15 @@ classdef SingleTest < handle
                             0 0 0];
                 for i = 1:8
                     subplot(2,1,1);
-                    plot(obj.responses(iteration,:,i*2-1), 'LineWidth', 2,...
+                    plot(obj.times(iteration,:),...
+                        obj.responses(iteration,:,i*2-1), 'LineWidth', 2,...
                         'Color', colors(i,:), 'DisplayName', string(i-1)+"t",...
                         'LineStyle','-');
                     
                     hold on
                     subplot(2,1,2);
-                    plot(obj.responses(iteration,:,i*2), 'LineWidth', 2,...
+                    plot(obj.times(iteration,:),...
+                        obj.responses(iteration,:,i*2), 'LineWidth', 2,...
                         'Color', colors(i,:), 'DisplayName', string(i-1)+"s",...
                         'LineStyle','-');
                     hold on
@@ -75,18 +78,20 @@ classdef SingleTest < handle
             end
             subplot(2,1,1);
             ylim([min(min(min(obj.responses)))-0.5 max(max(max(obj.responses)))]);
-            xlim([0 380])
+            xlim([0 max(obj.times(iteration,:))])
             set(gca, 'LineWidth', 2, 'FontSize', 15, 'XTickLabel', []);
             box off
             ylabel('Sensor Response (V)');
+            xlabel('Time (s)');
             legend('location','south', 'orientation', 'horizontal');
             title('Temperature Sensors');
             subplot(2,1,2);
             ylim([min(min(min(obj.responses)))-0.5 max(max(max(obj.responses)))]);
-            xlim([0 380])
+            xlim([0 max(obj.times(iteration,:))])
             set(gca, 'LineWidth', 2, 'FontSize', 15, 'XTickLabel', []);
             box off
             ylabel('Sensor Response (V)');
+            xlabel('Time (s)');
             legend('location','south', 'orientation', 'horizontal');
             title('Strain Sensors');
 

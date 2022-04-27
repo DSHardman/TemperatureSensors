@@ -13,9 +13,9 @@ com = "COM3"  # Of probe
 
 timebefore = 1
 timedown = 1.5
-timepressed = 5
+timepressed = 10
 timeup = 1.5
-timeafter = 1
+timeafter = 5
 dt = 0.05
 
 duration = timebefore + timeafter + timedown + timeup + timepressed
@@ -23,11 +23,13 @@ samplesdown = int(timedown/dt)
 samplesup = int(timeup/dt)
 
 
-zeropose = [0.181232, -0.553783, -0.00687646, 3.0947, 0.420936, -0.0594446]
+zeropose = [0.191144, -0.538177, -0.00425192, 3.12038, 0.12705, -0.0570452]
 
 #  Connect to UR5
 urnie = kgr.kg_robot(port=30010, db_host="169.254.150.50")
 urnie.set_tcp(wp.probing_tcp)
+
+# print(urnie.getl())
 
 # Connect to probe COM port
 if 'ser' in globals() and not ser.isOpen():
@@ -43,13 +45,19 @@ with ni.Task() as task:
     task.ao_channels.add_ao_voltage_chan("Dev1/ao0")
     task.write(5)
 
-for i in range(1000):  # Same location probed 1000 times
+for i in range(5):  # Same location probed 1000 times
 
     # Repeated xy positions & depth
-    x = 23/1000
-    y = 11.5/1000
+    x = 0.0206
+    y = 0.00625
 
-    depth = 0.001
+    #x = 0.025
+    #y = 0.01
+
+    #x = 0
+    #y = 0.0025
+
+    depth = 0.004
     xy = [x, y, depth]
 
     # Control press using defined variables
@@ -90,10 +98,12 @@ for i in range(1000):  # Same location probed 1000 times
     urnie.movel(startingpose, acc=0.02, vel=0.02)
 
     # Save data
-    np.save('rep/rawdata/response'+str(i), data)
-    np.save('rep/rawdata/poses'+str(i), poses)
-    np.save('rep/rawdata/times'+str(i), times)
-    np.save('rep/rawdata/xy'+str(i), xy)
-    np.save('rep/rawdata/temp' + str(i), float(temp))
+    np.save('rep/rawdata/response_b4s_100_'+str(i), data)
+    np.save('rep/rawdata/poses_b4s_100_'+str(i), poses)
+    np.save('rep/rawdata/times_b4s_100_'+str(i), times)
+    np.save('rep/rawdata/xy_b4s_100_'+str(i), xy)
+    np.save('rep/rawdata/temp_b4s_100_' + str(i), float(temp))
 
     print(i)
+
+urnie.close()
