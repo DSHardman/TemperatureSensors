@@ -3,7 +3,6 @@ NaiveExtraction
 inp = extractedinp;
 inp = normalize(inp);
 out = extractedout;
-out = normalize(out);
 
 % training data
 P=randperm(length(inp));
@@ -37,8 +36,10 @@ YTest(:,4) = (YTest(:,4)-20)./80;
 % define network and training options
 layers = [
     featureInputLayer(len,"Name","featureinput")
-    fullyConnectedLayer(200,"Name","fc_hidden")
-    reluLayer("Name","relu")
+    fullyConnectedLayer(200,"Name","fc_hidden1")
+    tanhLayer("Name","tanh1")
+    fullyConnectedLayer(50,"Name","fc_hidden2")
+    tanhLayer("Name","tanh2")
     fullyConnectedLayer(4,"Name","fc_out")
     regressionLayer("Name","regressionoutput")];
 
@@ -49,7 +50,7 @@ opts = trainingOptions('sgdm', ...
     'ValidationFrequency',30, ...
     'GradientThreshold',1000, ...
     'ValidationPatience',100,...
-    'InitialLearnRate',0.05*2, ...
+    'InitialLearnRate',0.05*0.4, ...
     'LearnRateSchedule','piecewise', ...
     'LearnRateDropPeriod',500, ...
     'LearnRateDropFactor', 0.1, ...
@@ -57,15 +58,21 @@ opts = trainingOptions('sgdm', ...
     'Plots','training-progress', 'ExecutionEnvironment', 'gpu');
 
 % Training
-[net, info] = trainNetwork(XTrain,YTrain,layers, opts);
+[net, info] = trainNetwork(XTest,YTest,layers, opts);
 
-ypred = predict(net, inp(P(4051:end),:));
+ypred = predict(net, XTest);
 
-ypred(:,1) = ypred(:,1).*25;
-ypred(:,2) = ypred(:,2).*20;
-ypred(:,3) = ypred(:,3).*3 + 1;
-ypred(:,4) = ypred(:,4).*80 + 20;
+pred(:,1) = ypred(:,1).*25;
+pred(:,2) = ypred(:,2).*20;
+pred(:,3) = ypred(:,3).*3 + 1;
+pred(:,4) = ypred(:,4).*80 + 20;
 
-%errors = [positions(P(9001:end),1:2) - ypred(P(9001:end),:)].').';
-%mean(errors)
+target = YTest;
+target(:,1) = target(:,1).*25;
+target(:,2) = target(:,2).*20;
+target(:,3) = target(:,3).*3 + 1;
+target(:,4) = target(:,4).*80 + 20;
+
+errors = pred - target;
+
 
