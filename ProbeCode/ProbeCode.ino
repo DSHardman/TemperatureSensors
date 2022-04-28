@@ -35,9 +35,9 @@ void setup() {
 void loop() {
   thermValue = analogRead(thermread);
   T = getTemp(thermValue); // in Celsius
-  Serial.print(int(T));
-  Serial.print(", ");
-  Serial.println(millis() - t0);
+  Serial.println(int(T));
+  // Serial.print(", ");
+  // Serial.println(millis() - t0);
   
   // LED lights up if within -10/+20 degrees of target
   // Stops script if temperature exceeds this
@@ -59,34 +59,34 @@ void loop() {
     digitalWrite(led, 0);
   }
 
-//  if (millis() - t0 > changetime) {
-//    t0 = millis();
-//    if (rising) {
-//      Tdes += 1;
-//      if (Tdes >= 100) {
-//        rising = 0;
-//      }
-//    }
-//    else {
-//      Tdes -= 1;
-//      if (Tdes <= 15) {
-//        rising = 1;
-//      }
-//    }
-//  }
-
-  if (n == 600) {
+  if (millis() - t0 > changetime) {
+    t0 = millis();
     if (rising) {
-      Tdes = 15;
-      rising = 0;
-      n = 0;
+      Tdes += 5;
+      if (Tdes >= 100) {
+        rising = 0;
+      }
     }
     else {
-      Tdes = 100;
-      rising = 1;
-      n = 0;
+      Tdes -= 5;
+      if (Tdes <= 15) {
+        rising = 1;
+      }
     }
   }
+
+//  if (n == 600) {
+//    if (rising) {
+//      Tdes = 15;
+//      rising = 0;
+//      n = 0;
+//    }
+//    else {
+//      Tdes = 100;
+//      rising = 1;
+//      n = 0;
+//    }
+//  }
 
   
   myPID.Compute();

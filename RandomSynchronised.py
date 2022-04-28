@@ -48,7 +48,7 @@ with ni.Task() as task:
     task.ao_channels.add_ao_voltage_chan("Dev1/ao0")
     task.write(5)
 
-for i in range(5000):  # Record 500 probes at each temperature
+for i in range(1203, 5000):  # Record 500 probes at each temperature
 
     # Random xy positions & depth
     x = random.random()*xupperbound
@@ -84,7 +84,14 @@ for i in range(5000):  # Record 500 probes at each temperature
         data = np.zeros((int(duration/dt), 1))*[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         times = np.zeros((int(duration/dt), 1))
         t0 = time.time()
-        temp = ser.readline()
+        while (1):
+            try:
+                temp = ser.readline()
+                float(temp)
+                break
+            except:
+                pass
+
         for k in range(0, int(duration/dt)):
             urnie.servoj(poses[k], control_time=dt, lookahead_time=0.2)
             data[k] = task.read()
