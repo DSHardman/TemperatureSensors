@@ -62,14 +62,14 @@ classdef SingleTest < handle
                             0 0 0];
                 for i = 1:8
                     subplot(2,1,1);
-                    plot(obj.times(iteration,:),...
+                    plot(obj.times(iteration,:)-obj.times(iteration,1),...
                         obj.responses(iteration,:,i*2-1), 'LineWidth', 2,...
                         'Color', colors(i,:), 'DisplayName', string(i-1)+"t",...
                         'LineStyle','-');
                     
                     hold on
                     subplot(2,1,2);
-                    plot(obj.times(iteration,:),...
+                    plot(obj.times(iteration,:)-obj.times(iteration,1),...
                         obj.responses(iteration,:,i*2), 'LineWidth', 2,...
                         'Color', colors(i,:), 'DisplayName', string(i-1)+"s",...
                         'LineStyle','-');
@@ -78,8 +78,8 @@ classdef SingleTest < handle
             end
             subplot(2,1,1);
             ylim([min(min(min(obj.responses)))-0.5 max(max(max(obj.responses)))]);
-            xlim([0 max(obj.times(iteration,:))])
-            set(gca, 'LineWidth', 2, 'FontSize', 15, 'XTickLabel', []);
+            xlim([0 max(obj.times(iteration,:))-obj.times(iteration,1)]);
+            set(gca, 'LineWidth', 2, 'FontSize', 15);
             box off
             ylabel('Sensor Response (V)');
             xlabel('Time (s)');
@@ -87,8 +87,8 @@ classdef SingleTest < handle
             title('Temperature Sensors');
             subplot(2,1,2);
             ylim([min(min(min(obj.responses)))-0.5 max(max(max(obj.responses)))]);
-            xlim([0 max(obj.times(iteration,:))])
-            set(gca, 'LineWidth', 2, 'FontSize', 15, 'XTickLabel', []);
+            xlim([0 max(obj.times(iteration,:))-obj.times(iteration,1)]);
+            set(gca, 'LineWidth', 2, 'FontSize', 15);
             box off
             ylabel('Sensor Response (V)');
             xlabel('Time (s)');
@@ -101,6 +101,14 @@ classdef SingleTest < handle
             sgtitle(titlestring);
             %set(gcf, 'Position', [571   200   838   778]); % PC
             set(gcf, 'Position', [242.6000   74.6000  805.4000  783.4000]); % Laptop
+        end
+
+        % For repeated tests, this function shows all responses at once
+        function plotrepeats(obj)
+            for i = 1:obj.n
+                figure();
+                obj.plotresponse(i);
+            end
         end
         
     end
