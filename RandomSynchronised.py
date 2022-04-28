@@ -18,20 +18,20 @@ depthlower = 0.001
 depthupper = 0.004
 dt = 0.05
 
-xupperbound = 53 * 0.001  # Only probes a square of this side length
-yupperbound = 53 * 0.001
+xupperbound = 50 * 0.001  # Only probes a square of this side length
+yupperbound = 50 * 0.001
 
 duration = timebefore + timeafter + timedown + timeup + timepressed
 samplesdown = int(timedown/dt)
 samplesup = int(timeup/dt)
 
-#zeropose = [0.181232, -0.553783, -0.006, 3.0947, 0.420936, -0.0594446]
-zeropose = [0.191144, -0.538177, -0.00425192, 3.12038, 0.12705, -0.0570452]
+#zeropose = [0.181232, -0.553783, -0.006, 3.0947, 0.420936, -0.0594446]  # small
+#zeropose = [0.191144, -0.538177, -0.00425192, 3.12038, 0.12705, -0.0570452]  # medium
+zeropose = [0.175174, -0.557184, -0.00322906, -3.12655, -0.121154, 0.0856744]  # large
 
 #  Connect to UR5
 urnie = kgr.kg_robot(port=30010, db_host="169.254.150.50")
 urnie.set_tcp(wp.probing_tcp)
-
 
 # # Connect to probe COM port
 if 'ser' in globals() and not ser.isOpen():

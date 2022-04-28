@@ -13,9 +13,9 @@ com = "COM3"  # Of probe
 
 timebefore = 1
 timedown = 1.5
-timepressed = 10
+timepressed = 100
 timeup = 1.5
-timeafter = 5
+timeafter = 50
 dt = 0.05
 
 duration = timebefore + timeafter + timedown + timeup + timepressed
@@ -23,7 +23,9 @@ samplesdown = int(timedown/dt)
 samplesup = int(timeup/dt)
 
 
-zeropose = [0.191144, -0.538177, -0.00425192, 3.12038, 0.12705, -0.0570452]
+#zeropose = [0.191144, -0.538177, -0.00425192, 3.12038, 0.12705, -0.0570452]
+zeropose = [0.175174, -0.557184, -0.00322906, -3.12655, -0.121154, 0.0856744]  # large
+[0.175567, -0.552788, 0.0102927, -3.1266, -0.12114, 0.0857483]
 
 #  Connect to UR5
 urnie = kgr.kg_robot(port=30010, db_host="169.254.150.50")
@@ -48,14 +50,23 @@ with ni.Task() as task:
 for i in range(5):  # Same location probed 1000 times
 
     # Repeated xy positions & depth
-    x = 0.0206
-    y = 0.00625
+    #x = 0.0206 #as
+    #y = 0.00625
 
     #x = 0.025
     #y = 0.01
 
     #x = 0
     #y = 0.0025
+
+    x = 0.041  # al
+    y = 0.039
+
+    # x = 0.051  # bl
+    # y = 0.02849
+
+    # x = 0  #cl
+    # y = 0.0044
 
     depth = 0.004
     xy = [x, y, depth]
@@ -98,11 +109,11 @@ for i in range(5):  # Same location probed 1000 times
     urnie.movel(startingpose, acc=0.02, vel=0.02)
 
     # Save data
-    np.save('rep/rawdata/response_b4s_100_'+str(i), data)
-    np.save('rep/rawdata/poses_b4s_100_'+str(i), poses)
-    np.save('rep/rawdata/times_b4s_100_'+str(i), times)
-    np.save('rep/rawdata/xy_b4s_100_'+str(i), xy)
-    np.save('rep/rawdata/temp_b4s_100_' + str(i), float(temp))
+    np.save('rep/rawdata/response_b4l_100_s_'+str(i), data)
+    np.save('rep/rawdata/poses_b4l_100_s_'+str(i), poses)
+    np.save('rep/rawdata/times_b4l_100_s_'+str(i), times)
+    np.save('rep/rawdata/xy_b4l_100_s_'+str(i), xy)
+    np.save('rep/rawdata/temp_b4l_100_s_' + str(i), float(temp))
 
     print(i)
 
