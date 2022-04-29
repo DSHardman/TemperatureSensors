@@ -1,33 +1,36 @@
-NaiveExtraction
+NaiveExtraction % Extract 3 data points from each of the 16 sensor response: input size 48
 
+% Define input/output variables for quick changing
 inp = extractedinp;
-inp = normalize(inp);
 out = extractedout;
 
-% training data
+% Training data
 P=randperm(length(inp));
-XTrain=inp(P(1:3600),:); % 80:10:10 data split
-YTrain=out(P(1:3600),:);
+XTrain=inp(P(1:round(0.8*length(inp))),:); % 80:10:10 data split
+YTrain=out(P(1:round(0.8*length(inp))),:);
 len=size(XTrain,2);
 
-YTrain(:,1) = YTrain(:,1)./25;
-YTrain(:,2) = YTrain(:,2)./20;
-YTrain(:,3) = (YTrain(:,3)-1)./3;
-YTrain(:,4) = (YTrain(:,4)-20)./80;
+% Normalize training outputs between 0 and 1
+YTrain(:,1) = YTrain(:,1)./25; % Small: x 0-25 mm
+YTrain(:,2) = YTrain(:,2)./20; % Small: y 0-20 mm
+YTrain(:,3) = (YTrain(:,3)-1)./3; % depths 1-4 mm
+YTrain(:,4) = (YTrain(:,4)-20)./80; % Temperatures mostly 20-100 C
 
-% validation data
-XVal=inp(P(3601:4050),:);
-YVal=out(P(3601:4050),:);
+% Validation data
+XVal=inp(P(round(0.8*length(inp))+1:round(0.9*length(inp))),:);
+YVal=out(P(round(0.8*length(inp))+1:round(0.9*length(inp))),:);
 
+% Normalize validation outputs between 0 and 1
 YVal(:,1) = YVal(:,1)./25;
 YVal(:,2) = YVal(:,2)./20;
 YVal(:,3) = (YVal(:,3)-1)./3;
 YVal(:,4) = (YVal(:,4)-20)./80;
 
-% test data
-XTest=inp(P(4051:end),:);
-YTest=out(P(4051:end),:);
+% Test data
+XTest=inp(P(round(0.9*length(inp)+1):end),:);
+YTest=out(P(round(0.9*length(inp)+1):end),:);
 
+% Normalize test outputs between 0 and 1
 YTest(:,1) = YTest(:,1)./25;
 YTest(:,2) = YTest(:,2)./20;
 YTest(:,3) = (YTest(:,3)-1)./3;
@@ -60,19 +63,22 @@ opts = trainingOptions('sgdm', ...
 % Training
 [net, info] = trainNetwork(XTest,YTest,layers, opts);
 
+% Make test set predictions
 ypred = predict(net, XTest);
 
+% Convert predictions back to dimensioned values
 pred(:,1) = ypred(:,1).*25;
 pred(:,2) = ypred(:,2).*20;
 pred(:,3) = ypred(:,3).*3 + 1;
 pred(:,4) = ypred(:,4).*80 + 20;
 
+% Reference target values for error calculations
 target = YTest;
 target(:,1) = target(:,1).*25;
 target(:,2) = target(:,2).*20;
 target(:,3) = target(:,3).*3 + 1;
 target(:,4) = target(:,4).*80 + 20;
 
+% Calculate errors
 errors = pred - target;
-
 
