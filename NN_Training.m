@@ -2,6 +2,7 @@ NaiveExtraction % Extract 3 data points from each of the 16 sensor response: inp
 
 % Define input/output variables for quick changing
 inp = extractedinp;
+inp = normalize(inp);
 out = extractedout;
 
 % Training data
