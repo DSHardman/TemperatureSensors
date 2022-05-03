@@ -15,10 +15,10 @@ classdef SingleTest < handle
             
             % initialise properties
             obj.n = n;
-            obj.responses = zeros(n,3080,16);
+            obj.responses = zeros(n,380,16);
             obj.positions = zeros(n,3);
-            obj.poses = zeros(n,3080,6);
-            obj.times = zeros(n,3080);
+            obj.poses = zeros(n,380,6);
+            obj.times = zeros(n,380);
             obj.temps = zeros(n,1);
             
             
