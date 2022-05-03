@@ -16,7 +16,7 @@ int n = 0;
 
 int thermValue;
 
-double Tdes = 15, T, Output;
+double Tdes = 70, T, Output;
 double Kp=50, Ki=20, Kd=0;
 PID myPID(&T, &Output, &Tdes, Kp, Ki, Kd, DIRECT);
 
@@ -36,7 +36,7 @@ void loop() {
   thermValue = analogRead(thermread);
   T = getTemp(thermValue); // in Celsius
   Serial.println(int(T));
-  // Serial.print(", ");
+   //Serial.print(", ");
   // Serial.println(millis() - t0);
   
   // LED lights up if within -10/+20 degrees of target
@@ -59,21 +59,21 @@ void loop() {
     digitalWrite(led, 0);
   }
 
-//  if (millis() - t0 > changetime) {
-//    t0 = millis();
-//    if (rising) {
-//      Tdes += 5;
-//      if (Tdes >= 100) {
-//        rising = 0;
-//      }
-//    }
-//    else {
-//      Tdes -= 5;
-//      if (Tdes <= 15) {
-//        rising = 1;
-//      }
-//    }
-//  }
+  if (millis() - t0 > changetime) {
+    t0 = millis();
+    if (rising) {
+      Tdes += 5;
+      if (Tdes >= 100) {
+        rising = 0;
+      }
+    }
+    else {
+      Tdes -= 5;
+      if (Tdes <= 15) {
+        rising = 1;
+      }
+    }
+  }
 //
 //  if (n == 300) {
 //    if (rising) {
