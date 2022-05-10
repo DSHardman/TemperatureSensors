@@ -12,8 +12,10 @@ YTrain=out(P(1:round(0.8*length(inp))),:);
 len=size(XTrain,2);
 
 % Normalize training outputs between 0 and 1
-YTrain(:,1) = YTrain(:,1)./25; % Small: x 0-25 mm
-YTrain(:,2) = YTrain(:,2)./20; % Small: y 0-20 mm
+% YTrain(:,1) = YTrain(:,1)./25; % Small: x 0-25 mm
+% YTrain(:,2) = YTrain(:,2)./20; % Small: y 0-20 mm
+YTrain(:,1) = YTrain(:,1)./50; % Large: x 0-50 mm
+YTrain(:,2) = YTrain(:,2)./50; % Large: y 0-50 mm
 YTrain(:,3) = (YTrain(:,3)-1)./3; % depths 1-4 mm
 YTrain(:,4) = (YTrain(:,4)-20)./80; % Temperatures mostly 20-100 C
 
@@ -22,8 +24,10 @@ XVal=inp(P(round(0.8*length(inp))+1:round(0.9*length(inp))),:);
 YVal=out(P(round(0.8*length(inp))+1:round(0.9*length(inp))),:);
 
 % Normalize validation outputs between 0 and 1
-YVal(:,1) = YVal(:,1)./25;
-YVal(:,2) = YVal(:,2)./20;
+% YVal(:,1) = YVal(:,1)./25;
+% YVal(:,2) = YVal(:,2)./20;
+YVal(:,1) = YVal(:,1)./50;
+YVal(:,2) = YVal(:,2)./50;
 YVal(:,3) = (YVal(:,3)-1)./3;
 YVal(:,4) = (YVal(:,4)-20)./80;
 
@@ -32,8 +36,10 @@ XTest=inp(P(round(0.9*length(inp)+1):end),:);
 YTest=out(P(round(0.9*length(inp)+1):end),:);
 
 % Normalize test outputs between 0 and 1
-YTest(:,1) = YTest(:,1)./25;
-YTest(:,2) = YTest(:,2)./20;
+% YTest(:,1) = YTest(:,1)./25;
+% YTest(:,2) = YTest(:,2)./20;
+YTest(:,1) = YTest(:,1)./50;
+YTest(:,2) = YTest(:,2)./50;
 YTest(:,3) = (YTest(:,3)-1)./3;
 YTest(:,4) = (YTest(:,4)-20)./80;
 
@@ -68,15 +74,15 @@ opts = trainingOptions('sgdm', ...
 ypred = predict(net, XTest);
 
 % Convert predictions back to dimensioned values
-pred(:,1) = ypred(:,1).*25;
-pred(:,2) = ypred(:,2).*20;
+pred(:,1) = ypred(:,1).*50;  % Large
+pred(:,2) = ypred(:,2).*50;
 pred(:,3) = ypred(:,3).*3 + 1;
 pred(:,4) = ypred(:,4).*80 + 20;
 
 % Reference target values for error calculations
 target = YTest;
-target(:,1) = target(:,1).*25;
-target(:,2) = target(:,2).*20;
+target(:,1) = target(:,1).*50;  % Large
+target(:,2) = target(:,2).*50;
 target(:,3) = target(:,3).*3 + 1;
 target(:,4) = target(:,4).*80 + 20;
 
