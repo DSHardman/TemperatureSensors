@@ -2,7 +2,7 @@ dataobj = l_osc;
 
 % Solely taking fixed indices of sampled data: no prior filtering
 
-extractedinp = zeros(dataobj.n, 48);
+extractedinp = zeros(dataobj.n, 16*3);
 extractedout = [dataobj.positions dataobj.temps];
 
 for i = 1:dataobj.n
