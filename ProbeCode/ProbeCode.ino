@@ -35,9 +35,9 @@ void setup() {
 void loop() {
   thermValue = analogRead(thermread);
   T = getTemp(thermValue); // in Celsius
-  Serial.println(int(T));
-   //Serial.print(", ");
-  // Serial.println(millis() - t0);
+  Serial.print(int(T));
+  Serial.print(", ");
+  Serial.println(millis() - t0);
   
   // LED lights up if within -10/+20 degrees of target
   // Stops script if temperature exceeds this

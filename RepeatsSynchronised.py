@@ -12,14 +12,14 @@ from nidaqmx.constants import TerminalConfiguration
 # medium: a: [0.03, 0.03], b: [0.0375, 0.021], c: [0, 0.0033]
 # large: a: [0.041, 0.039], b: [0.051, 0.02849], c: [0, 0.0044]
 
-xa = 0
-ya = 0
+xa = 0.041
+ya = 0.039
 
-xb = 0
-yb = 0
+xb = 0.051
+yb = 0.02849
 
 xc = 0
-yc = 0
+yc = 0.0044
 
 
 def repeats(x, y, depth, rootstring, timepressed=10, timeafter=5):
@@ -38,14 +38,14 @@ def repeats(x, y, depth, rootstring, timepressed=10, timeafter=5):
 
 
     #zeropose = [0.191144, -0.538177, -0.00425192, 3.12038, 0.12705, -0.0570452]
-    #zeropose = [0.175174, -0.557184, -0.00322906, -3.12655, -0.121154, 0.0856744]  # large
-    zeropose = [0.170165, -0.549242, -0.00279447, -3.10217, -0.119919, 0.0949817]  # medium2
+    zeropose = [0.179466, -0.55881, -0.00290189, -3.11991, -0.121519, -0.0376175]
+    #zeropose = [0.170165, -0.549242, -0.00279447, -3.10217, -0.119919, 0.0949817]  # medium2
 
     #  Connect to UR5
     urnie = kgr.kg_robot(port=30010, db_host="169.254.150.50")
     urnie.set_tcp(wp.probing_tcp)
 
-    #print(urnie.getl())
+    print(urnie.getl())
 
     # Connect to probe COM port
     if 'ser' in globals() and not ser.isOpen():
@@ -102,20 +102,25 @@ def repeats(x, y, depth, rootstring, timepressed=10, timeafter=5):
         urnie.movel(startingpose, acc=0.02, vel=0.02)
 
         # Save data
-        np.save(rootstring+str(i), data)
-        np.save(rootstring+str(i), poses)
-        np.save(rootstring+str(i), times)
-        np.save(rootstring+str(i), xy)
-        np.save(rootstring+str(i), float(temp))
+        np.save('rep/rawdata/response'+rootstring+str(i), data)
+        np.save('rep/rawdata/poses'+rootstring+str(i), poses)
+        np.save('rep/rawdata/times'+rootstring+str(i), times)
+        np.save('rep/rawdata/xy'+rootstring+str(i), xy)
+        np.save('rep/rawdata/temp'+rootstring+str(i), float(temp))
 
         print(i)
 
     urnie.close()
 
 
-repeats(xa, ya, 0.001, 'rep/rawdata/response_a1me_50_')
-repeats(xa, ya, 0.004, 'rep/rawdata/response_a4me_50_')
-repeats(xb, yb, 0.001, 'rep/rawdata/response_b1me_50_')
-repeats(xb, yb, 0.004, 'rep/rawdata/response_b4me_50_')
-repeats(xc, yc, 0.001, 'rep/rawdata/response_c1me_50_')
-repeats(xc, yc, 0.004, 'rep/rawdata/response_c4me_50_')
+repeats(xa, ya, 0.001, '_a1le_100_')
+repeats(xa, ya, 0.004, '_a4le_100_')
+repeats(xb, yb, 0.001, '_b1le_100_')
+repeats(xb, yb, 0.004, '_b4le_100_')
+repeats(xc, yc, 0.001, '_c1le_100_')
+repeats(xc, yc, 0.004, '_c4le_100_')
+
+repeats(xa, ya, 0.004, '_a4le_100_q_', 1, 1)
+repeats(xa, ya, 0.004, '_a4le_100_s_', 100, 50)
+repeats(xa, ya, 0.001, '_a1le_100_q_', 1, 1)
+repeats(xb, yb, 0.004, '_b4le_100_s_', 100, 50)
