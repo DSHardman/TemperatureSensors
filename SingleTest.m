@@ -6,6 +6,8 @@ classdef SingleTest < handle
         poses
         times
         temps
+        tvdresponses
+        tvdsingles
     end
     
     methods
@@ -20,6 +22,7 @@ classdef SingleTest < handle
             obj.poses = zeros(n,380,6);
             obj.times = zeros(n,380);
             obj.temps = zeros(n,1);
+            obj.tvdresponses = NaN;
             
             
             for i = 1:n
@@ -108,6 +111,20 @@ classdef SingleTest < handle
             for i = 1:obj.n
                 figure();
                 obj.plotresponse(i);
+            end
+        end
+
+        % TVD decomposition and 3-point extraction
+        function extracttvd(obj)
+            obj.tvdresponses = zeros(obj.n, 48);
+            obj.tvdsingles = zeros(obj.n, 16);
+            for i = 1:obj.n
+                for j = 1:16
+                    x = zeros(size(obj.responses(i,:,j)));
+                    [x(1,:,1), ~] = pwc_tvdrobust(obj.responses(i,:,j), 15, 0);
+                    obj.tvdresponses(i,3*(j-1)+1:3*j) = [x(1), mean(x(70:250)), x(end)];
+                    obj.tvdsingles(i,j) = (2*mean(x(70:250)) - x(1) - x(end))/(x(1)+x(end));
+                end
             end
         end
         

@@ -5,7 +5,7 @@ inp = extractedinp;
 %inp = l_osc.tvdsingles;
 inp = (inp - mean(inp))./std(inp); % normalise input
 %inp = normalize(inp);
-out = extractedout;
+out = extractedout(:,1:2);
 
 % Normalize outputs between 0 and 1
 % out(:,1) = out(:,1)./25; % Small: x 0-25 mm
@@ -14,8 +14,8 @@ out = extractedout;
 % out(:,2) = out(:,2)./40; % Medium: y 0-40 mm
 out(:,1) = out(:,1)./50; % Large: x 0-50 mm
 out(:,2) = out(:,2)./50; % Large: y 0-50 mm
-out(:,3) = (out(:,3)-1)./3; % depths 1-4 mm
-out(:,4) = (out(:,4)-20)./80; % Temperatures mostly 20-100 C
+%out(:,3) = (out(:,3)-1)./3; % depths 1-4 mm
+%out(:,4) = (out(:,4)-20)./80; % Temperatures mostly 20-100 C
 
 % Training data
 P=randperm(length(inp));
@@ -34,10 +34,12 @@ YTest=out(P(round(0.9*length(inp)+1):end),:);
 % define network and training options
 layers = [
     featureInputLayer(len,"Name","featureinput")
-    fullyConnectedLayer(50,"Name","fc_hidden1")
+    fullyConnectedLayer(300,"Name","fc_hidden1")
     tanhLayer("Name","tanh1")
     fullyConnectedLayer(100,"Name","fc_hidden2")
     tanhLayer("Name","tanh2")
+    fullyConnectedLayer(100,"Name","fc_hidden3")
+    tanhLayer("Name","tanh3")
     fullyConnectedLayer(size(out, 2),"Name","fc_out")
     regressionLayer("Name","regressionoutput")];
 
@@ -70,8 +72,8 @@ clear pred
 % pred(:,2) = ypred(:,2).*40;
 pred(:,1) = ypred(:,1).*50;  % Large
 pred(:,2) = ypred(:,2).*50;
-pred(:,3) = ypred(:,3).*3 + 1;
-pred(:,4) = ypred(:,4).*80 + 20;
+%pred(:,3) = ypred(:,3).*3 + 1;
+%pred(:,4) = ypred(:,4).*80 + 20;
 
 % Reference target values for error calculations
 target = YTest;
@@ -81,8 +83,8 @@ target = YTest;
 % target(:,2) = target(:,2).*40;
 target(:,1) = target(:,1).*50;  % Large
 target(:,2) = target(:,2).*50;
-target(:,3) = target(:,3).*3 + 1;
-target(:,4) = target(:,4).*80 + 20;
+%target(:,3) = target(:,3).*3 + 1;
+%target(:,4) = target(:,4).*80 + 20;
 
 % Calculate errors
 errors = pred - target;
