@@ -53,6 +53,8 @@ l_tvd = extractandtrain(dataobj, 0, extractedout, 'l');
 
 function errormat = extractandtrain(dataobj, n, extractedout, sens_size)
     errormat = zeros(4, 3);
+    sens_size
+    n
     
     samples = n;
     switch samples
@@ -64,6 +66,7 @@ function errormat = extractandtrain(dataobj, n, extractedout, sens_size)
             inds = [50:2:60 260:4:280];
         case 0
             % tvd
+            dataobj.extracttvd();
         otherwise
             % do nothing
     end
@@ -80,15 +83,15 @@ function errormat = extractandtrain(dataobj, n, extractedout, sens_size)
     end
     
     % test 4 different architectures
-    errormat(1,:) = sensorTrain(extractedinp, extractedout, sens_size,...
+    [~, ~, errormat(1,:)] = sensorTrain(extractedinp, extractedout, sens_size,...
         'b', [1 1 1], [100], 1, [0.8 0.1 0.1], 0);
 
-    errormat(2,:) = sensorTrain(extractedinp, extractedout, sens_size,...
+    [~, ~, errormat(2,:)] = sensorTrain(extractedinp, extractedout, sens_size,...
         'b', [1 1 1], [100 50], 1, [0.8 0.1 0.1], 0);
 
-    errormat(3,:) = sensorTrain(extractedinp, extractedout, sens_size,...
+    [~, ~, errormat(3,:)] = sensorTrain(extractedinp, extractedout, sens_size,...
         'b', [1 1 1], [200 50], 1, [0.8 0.1 0.1], 0);
 
-    errormat(4,:) = sensorTrain(extractedinp, extractedout, sens_size,...
+    [~, ~, errormat(4,:)] = sensorTrain(extractedinp, extractedout, sens_size,...
         'b', [1 1 1], [200 50 20], 1, [0.8 0.1 0.1], 0);
 end

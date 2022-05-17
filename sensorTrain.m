@@ -93,7 +93,7 @@ function [trainmeans, valmeans, testmeans] = sensorTrain(inp, out, sens_size,...
 
 
     %% Build network architecture and training options
-    layers = [featureInputLayer(size(XTrain,2);,"Name","featureinput")];
+    layers = [featureInputLayer(size(XTrain,2),"Name","featureinput")];
     for i = 1:length(fclayers)
         fcname = "fc"+string(i);
         tanhname = "tanh"+string(i);
@@ -127,7 +127,6 @@ function [trainmeans, valmeans, testmeans] = sensorTrain(inp, out, sens_size,...
     [net, ~] = trainNetwork(XTrain,YTrain,layers, opts);
 
     %% Calculate and return mean errors for training, validation, and test sets
-    fprintf('Mean Training Errors:\n');
     errors = calculateErrors(XTrain, YTrain, TrainPositions, net, sens_size, out_pred, figs);
     if figs
         sgtitle('Train');

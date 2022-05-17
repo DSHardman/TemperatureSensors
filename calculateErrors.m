@@ -1,4 +1,4 @@
-function errors = calculateErrors(X, target, positions, net, sens_size, out_pred, plot)
+function errors = calculateErrors(X, target, positions, net, sens_size, out_pred, figs)
 % Use given network and input/target to calculate and plot mean errors
 % Called by sensorTrain.m - mirrors inputs
     
@@ -36,7 +36,7 @@ function errors = calculateErrors(X, target, positions, net, sens_size, out_pred
     if out_pred(3)
         pred(:,end) = ypred(:,end).*80 + 20;
         target(:,end) = target(:,end).*80 + 20;
-        if out_pred(2)
+        if out_pred(2) && ~out_pred(1)
             pred(:,end-1) = ypred(:,end-1).*3 + 1;
             target(:,end-1) = target(:,end-1).*3 + 1;
         end
@@ -51,7 +51,7 @@ function errors = calculateErrors(X, target, positions, net, sens_size, out_pred
     errors = pred - target;
 
     %% Scatter plots of errors, for localisation, depth, and temperature sensing
-    if plot
+    if figs
         figure();
         if out_pred(1)
             subplot(1,3,1);
