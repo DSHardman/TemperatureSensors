@@ -1,4 +1,4 @@
-function errors = calculateErrors(X, target, positions, net, sens_size, out_pred, figs)
+function [errors, pred, target] = calculateErrors(X, target, positions, net, sens_size, out_pred, figs)
 % Use given network and input/target to calculate and plot mean errors
 % Called by sensorTrain.m - mirrors inputs
     

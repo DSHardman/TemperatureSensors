@@ -1,4 +1,4 @@
-function [trainmeans, valmeans, testmeans] = sensorTrain(inp, out, sens_size,...
+function [trainmeans, valmeans, testmeans, errors, pred, target] = sensorTrain(inp, out, sens_size,...
                                 inp_sens, out_pred, fclayers, normalise, ratio, figs)
 % Train feedforward neural network to predict localisation, depth, and
 % temperature of probing based on strain and temperature feedback
@@ -127,17 +127,17 @@ function [trainmeans, valmeans, testmeans] = sensorTrain(inp, out, sens_size,...
     [net, ~] = trainNetwork(XTrain,YTrain,layers, opts);
 
     %% Calculate and return mean errors for training, validation, and test sets
-    errors = calculateErrors(XTrain, YTrain, TrainPositions, net, sens_size, out_pred, figs);
+    [errors, ~, ~] = calculateErrors(XTrain, YTrain, TrainPositions, net, sens_size, out_pred, figs);
     if figs
         sgtitle('Train');
     end
     trainmeans = mean(abs(errors));
-    errors = calculateErrors(XVal, YVal, ValPositions, net, sens_size, out_pred, figs);
+    [errors, ~, ~] = calculateErrors(XVal, YVal, ValPositions, net, sens_size, out_pred, figs);
     if figs
         sgtitle('Validation');
     end
     valmeans = mean(abs(errors));
-    errors = calculateErrors(XTest, YTest, TestPositions, net, sens_size, out_pred, figs);
+    [errors, pred, target] = calculateErrors(XTest, YTest, TestPositions, net, sens_size, out_pred, figs);
     if figs
         sgtitle('Test');
     end
