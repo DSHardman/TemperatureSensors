@@ -1,4 +1,4 @@
-dataobj = l_osc;
+dataobj = m_osc;
 
 % Solely taking fixed indices of sampled data: no prior filtering
 
