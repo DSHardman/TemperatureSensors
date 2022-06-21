@@ -33,7 +33,6 @@ patternpred(:,2) = patternpred(:,2).*50;
 % patternpred(:,4) = patternpred(:,4).*80 + 20;
 
 errors = patternpred(:,1:2) - patterntarget(:,1:2);
-discrep = double(sum(rssq(errors).'));
 
 figure();
 line([0 50 50 0 0], [0 0 50 50 0], 'color', 'k')

@@ -55,6 +55,7 @@ opts = trainingOptions('sgdm', ...
     'Verbose',0, ...
     'Plots','training-progress', 'ExecutionEnvironment', 'gpu');
 
+
 % Training
 [net, info] = trainNetwork(XTrain,YTrain,layers, opts);
 
