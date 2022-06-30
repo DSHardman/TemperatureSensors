@@ -2,14 +2,16 @@ x = zeros(50,1);
 y = zeros(50,1);
 
 for i = 1:50
-    x(i) = 24*sin(2*pi*i/50) + 25;
-    y(i) = 24*cos(2*pi*i/50) + 25;
+%     x(i) = 24*sin(2*pi*i/50) + 25;
+%     y(i) = 24*cos(2*pi*i/50) + 25;
+    x(i) = 10*sin(2*pi*i/50) + 12.5;
+    y(i) = 10*cos(2*pi*i/50) + 10;
 end
 
 inds = closestPoint(x, y, target);
 
 figure();
-line([0 50 50 0 0], [0 0 50 50 0], 'color', 'k')
+% line([0 50 50 0 0], [0 0 50 50 0], 'color', 'k')
 hold on
 scatter(pred(inds,1), pred(inds,2), 'filled');
 scatter(target(inds,1), target(inds,2), 'filled');
