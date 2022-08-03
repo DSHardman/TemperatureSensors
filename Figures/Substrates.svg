@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="341.53162mm"
+   height="177.90297mm"
+   viewBox="0 0 341.53162 177.90297"
    version="1.1"
    id="svg5"
    inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
@@ -25,8 +25,8 @@
      showgrid="false"
      showborder="false"
      inkscape:zoom="0.66368547"
-     inkscape:cx="-242.58479"
-     inkscape:cy="73.076785"
+     inkscape:cx="449.00787"
+     inkscape:cy="231.28426"
      inkscape:window-width="1920"
      inkscape:window-height="1121"
      inkscape:window-x="-9"
@@ -567,7 +567,8 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(215.21625,84.998262)">
     <g
        id="g832"
        transform="matrix(0.03527778,0,0,-0.03527778,-237.66115,106.33633)">
@@ -5426,7 +5427,8 @@
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="Layer 2">
+     inkscape:label="Layer 2"
+     transform="translate(215.21625,84.998262)">
     <g
        id="g33683">
       <g
@@ -5857,5 +5859,49 @@
          inkscape:original-d="m -191.18299,19.130874 c 1.2e-4,7.63064 1.2e-4,15.26117 0,22.891575"
          transform="translate(80.444681,-148.26723)" />
     </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.95926px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0989815"
+       x="-191.26625"
+       y="-80.133698"
+       id="text5211"><tspan
+         sodipodi:role="line"
+         id="tspan5209"
+         style="stroke-width:0.0989815"
+         x="-191.26625"
+         y="-80.133698">Strain</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.95926px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0989815"
+       x="-7.8414636"
+       y="-80.133698"
+       id="text5211-6"><tspan
+         sodipodi:role="line"
+         id="tspan5209-3"
+         style="stroke-width:0.0989815"
+         x="-7.8414636"
+         y="-80.133698">Strain</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.95926px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0989815"
+       x="-15.274453"
+       y="16.062626"
+       id="text5211-6-3"><tspan
+         sodipodi:role="line"
+         id="tspan5209-3-2"
+         style="stroke-width:0.0989815"
+         x="-15.274453"
+         y="16.062626">Temperature</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.95926px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0989815"
+       x="-197.86342"
+       y="15.357892"
+       id="text5211-6-3-3"><tspan
+         sodipodi:role="line"
+         id="tspan5209-3-2-1"
+         style="stroke-width:0.0989815"
+         x="-197.86342"
+         y="15.357892">Temperature</tspan></text>
   </g>
 </svg>
