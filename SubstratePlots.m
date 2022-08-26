@@ -1,19 +1,19 @@
-% tiledlayout(2,2);
-% nexttile
-% substratebar(6, '2s', [0 10]);
-% nexttile
-% substratebar(10, '4s', [0 10]);
-% nexttile;
-% substratebar(11, '5t', [0 20]);
-% nexttile;
-% substratebar(13, '6t', [0 20]);
-% set(gcf, 'position', 1000*[0.0202    0.0994    1.5072    0.7586]);
+tiledlayout(2,2);
+nexttile
+substratebar(6, '2s', [0 10]);
+nexttile
+substratebar(10, '4s', [0 10]);
+nexttile;
+substratebar(1, '0t', [0 50]);
+nexttile;
+substratebar(5, '2t', [0 50]);
+set(gcf, 'position', 1000*[0.0202    0.0994    1.5072    0.7586]);
 
-substratebar(2, '0s', [0 10]);
-figure()
-substratebar(4, '1s', [0 10]);
-figure()
-substratebar(12, '5s', [0 10]);
+% substratebar(2, '0s', [0 10]);
+% figure()
+% substratebar(4, '1s', [0 10]);
+% figure()
+% substratebar(12, '5s', [0 10]);
 
 
 function substratebar(sens, titlestring, ylims)
