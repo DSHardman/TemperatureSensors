@@ -41,6 +41,8 @@ function [trainmeans, valmeans, testmeans, errors, pred, target, net] = sensorTr
             fprintf('Invalid input sensors');
     end
 
+    deeplocs = find(out(:,3)>2.5); % find depths greater than 2.5 mm
+
     %% Standardize outputs between 0 and 1
     switch sens_size
         case 's'
@@ -87,9 +89,24 @@ function [trainmeans, valmeans, testmeans, errors, pred, target, net] = sensorTr
     ValPositions = positions(P(round(ratio(1)*length(inp))+1:round(sum(ratio(1:2))*length(inp))),:);
     
     % Test data
-    XTest=inp(P(round(sum(ratio(1:2))*length(inp)+1):end),:);
-    YTest=out(P(round(sum(ratio(1:2))*length(inp)+1):end),:);
-    TestPositions = positions(P(round(sum(ratio(1:2))*length(inp)+1):end),:);
+%     XTest=inp(P(round(sum(ratio(1:2))*length(inp)+1):end),:);
+%     YTest=out(P(round(sum(ratio(1:2))*length(inp)+1):end),:);
+%     TestPositions = positions(P(round(sum(ratio(1:2))*length(inp)+1):end),:);
+
+    % The test set should consist of only the deepest presses which we
+    % found earlier
+    XTest = [];
+    YTest = [];
+    TestPositions = [];
+
+    for i = round(sum(ratio(1:2))*length(inp)+1):size(P,1)
+        if any(deeplocs == P(i))
+            XTest = [XTest; inp(P(i),:)];
+            YTest = [YTest; out(P(i),:)];
+            TestPositions = [TestPositions; positions(P(i),:)];
+        end
+    end
+    fprintf("The size of the deep test set is %d.\n", size(XTest, 1));
 
 
     %% Build network architecture and training options
@@ -137,6 +154,7 @@ function [trainmeans, valmeans, testmeans, errors, pred, target, net] = sensorTr
         sgtitle('Validation');
     end
     valmeans = mean(abs(errors));
+
     [errors, pred, target] = calculateErrors(XTest, YTest, TestPositions, net, sens_size, out_pred, figs);
     if figs
         sgtitle('Test');
