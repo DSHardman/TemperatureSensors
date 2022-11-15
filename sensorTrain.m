@@ -41,7 +41,7 @@ function [trainmeans, valmeans, testmeans, errors, pred, target, net] = sensorTr
             fprintf('Invalid input sensors');
     end
 
-    deeplocs = find(out(:,3)>2.5); % find depths greater than 2.5 mm
+%     deeplocs = find(out(:,3)>2.5); % find depths greater than 2.5 mm
 
     %% Standardize outputs between 0 and 1
     switch sens_size
@@ -95,18 +95,18 @@ function [trainmeans, valmeans, testmeans, errors, pred, target, net] = sensorTr
 
 %     % The test set should consist of only the deepest presses which we
 %     % found earlier
-    XTest = [];
-    YTest = [];
-    TestPositions = [];
-
-    for i = round(sum(ratio(1:2))*length(inp)+1):size(P,2)
-        if any(deeplocs == P(i))
-            XTest = [XTest; inp(P(i),:)];
-            YTest = [YTest; out(P(i),:)];
-            TestPositions = [TestPositions; positions(P(i),:)];
-        end
-    end
-    fprintf("The size of the deep test set is %d.\n", size(XTest, 1));
+%     XTest = [];
+%     YTest = [];
+%     TestPositions = [];
+% 
+%     for i = round(sum(ratio(1:2))*length(inp)+1):size(P,2)
+%         if any(deeplocs == P(i))
+%             XTest = [XTest; inp(P(i),:)];
+%             YTest = [YTest; out(P(i),:)];
+%             TestPositions = [TestPositions; positions(P(i),:)];
+%         end
+%     end
+%     fprintf("The size of the deep test set is %d.\n", size(XTest, 1));
 
 
     %% Build network architecture and training options

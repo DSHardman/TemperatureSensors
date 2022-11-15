@@ -3,9 +3,9 @@
 % dataobj = s_osc;
 % extractedout = [dataobj.positions dataobj.temps];
 % 
-samples = 18;
-% inds = [40 54 80   250 263 290 295];
-inds = [30 40 45 50 55 60 65 70 80 240 245 250 255 260 265 275 285 295];
+samples = 6;
+inds = [40 54 80   250 263 290 295];
+% inds = [30 40 45 50 55 60 65 70 80 240 245 250 255 260 265 275 285 295];
 % extractedinp = zeros(dataobj.n, 16*samples);
 % for i = 1:dataobj.n
 %     for j = 1:16
