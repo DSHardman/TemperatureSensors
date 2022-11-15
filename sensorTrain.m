@@ -89,17 +89,17 @@ function [trainmeans, valmeans, testmeans, errors, pred, target, net] = sensorTr
     ValPositions = positions(P(round(ratio(1)*length(inp))+1:round(sum(ratio(1:2))*length(inp))),:);
     
     % Test data
-%     XTest=inp(P(round(sum(ratio(1:2))*length(inp)+1):end),:);
-%     YTest=out(P(round(sum(ratio(1:2))*length(inp)+1):end),:);
-%     TestPositions = positions(P(round(sum(ratio(1:2))*length(inp)+1):end),:);
+    XTest=inp(P(round(sum(ratio(1:2))*length(inp)+1):end),:);
+    YTest=out(P(round(sum(ratio(1:2))*length(inp)+1):end),:);
+    TestPositions = positions(P(round(sum(ratio(1:2))*length(inp)+1):end),:);
 
-    % The test set should consist of only the deepest presses which we
-    % found earlier
+%     % The test set should consist of only the deepest presses which we
+%     % found earlier
     XTest = [];
     YTest = [];
     TestPositions = [];
 
-    for i = round(sum(ratio(1:2))*length(inp)+1):size(P,1)
+    for i = round(sum(ratio(1:2))*length(inp)+1):size(P,2)
         if any(deeplocs == P(i))
             XTest = [XTest; inp(P(i),:)];
             YTest = [YTest; out(P(i),:)];
