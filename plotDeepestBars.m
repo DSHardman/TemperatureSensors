@@ -1,4 +1,4 @@
-load('DeepestBars.mat');
+% load('DeepestBars.mat');
 colors = 1/255*[117 112 179; 231 31 138];
 
 subplot(3,1,1);
